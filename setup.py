@@ -21,6 +21,7 @@ setup(
         "dissect.sql==3.0",
         "dissect.target[full]==3.1",
         "dissect.util==3.1",
+        "dissect.vmfs==3.0",
         "dissect.volume==3.0",
         "dissect.xfs==3.0",
     ],
