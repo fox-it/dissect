@@ -3,6 +3,36 @@
 This project is a meta package, it will install all other Dissect modules with the right combination of versions. For
 more information, please see [the documentation](https://dissect.readthedocs.io/en/latest/projects).
 
+## Projects
+
+- [dissect.cim](https://github.com/fox-it/dissect.cim)
+- [dissect.clfs](https://github.com/fox-it/dissect.clfs)
+- [dissect.cstruct](https://github.com/fox-it/dissect.cstruct)
+- [dissect.esedb](https://github.com/fox-it/dissect.esedb)
+- [dissect.etl](https://github.com/fox-it/dissect.etl)
+- [dissect.eventlog](https://github.com/fox-it/dissect.eventlog)
+- [dissect.evidence](https://github.com/fox-it/dissect.evidence)
+- [dissect.extfs](https://github.com/fox-it/dissect.extfs)
+- [dissect.fat](https://github.com/fox-it/dissect.fat)
+- [dissect.ffs](https://github.com/fox-it/dissect.ffs)
+- [dissect.hypervisor](https://github.com/fox-it/dissect.hypervisor)
+- [dissect.ntfs](https://github.com/fox-it/dissect.ntfs)
+- [dissect.ole](https://github.com/fox-it/dissect.ole)
+- [dissect.regf](https://github.com/fox-it/dissect.regf)
+- [dissect.sql](https://github.com/fox-it/dissect.sql)
+- [dissect.target](https://github.com/fox-it/dissect.target)
+- [dissect.util](https://github.com/fox-it/dissect.util)
+- [dissect.vmfs](https://github.com/fox-it/dissect.vmfs)
+- [dissect.volume](https://github.com/fox-it/dissect.volume)
+- [dissect.xfs](https://github.com/fox-it/dissect.xfs)
+
+### Related
+
+These projects are closely related to Dissect, but not installed by this meta package.
+
+- [acquire](https://github.com/fox-it/acquire)
+- [flow.record](https://github.com/fox-it/flow.record)
+
 ## Build and test instructions
 
 This project uses `tox` to build source and wheel distributions. Run the following command from the root folder to build
