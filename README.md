@@ -33,6 +33,12 @@ These projects are closely related to Dissect, but not installed by this meta pa
 - [acquire](https://github.com/fox-it/acquire)
 - [flow.record](https://github.com/fox-it/flow.record)
 
+## Installation
+
+```bash
+pip install dissect
+```
+
 ## Build and test instructions
 
 This project uses `tox` to build source and wheel distributions. Run the following command from the root folder to build
