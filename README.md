@@ -35,6 +35,8 @@ These projects are closely related to Dissect, but not installed by this meta pa
 
 ## Installation
 
+`dissect` is available on [PyPI](https://pypi.org/project/dissect/).
+
 ```bash
 pip install dissect
 ```
