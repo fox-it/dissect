@@ -1,7 +1,7 @@
 # dissect
 
 This project is a meta package, it will install all other Dissect modules with the right combination of versions. For
-more information, please see [the documentation](https://dissect.readthedocs.io/en/latest/projects).
+more information, please see [the documentation](https://docs.dissect.tools/).
 
 ## Projects
 
@@ -60,12 +60,12 @@ tox
 ```
 
 For a more elaborate explanation on how to build and test the project, please see [the
-documentation](https://dissect.readthedocs.io/en/latest/contributing/developing.html#building-testing).
+documentation](https://docs.dissect.tools/en/latest/contributing/developing.html#building-testing).
 
 ## Contributing
 
 The Dissect project encourages any contribution to the codebase. To make your contribution fit into the project, please
-refer to [the style guide](https://dissect.readthedocs.io/en/latest/contributing/style-guide.html).
+refer to [the style guide](https://docs.dissect.tools/en/latest/contributing/style-guide.html).
 
 ## Copyright and license
 
