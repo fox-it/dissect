@@ -60,7 +60,7 @@ tox
 ```
 
 For a more elaborate explanation on how to build and test the project, please see [the
-documentation](https://docs.dissect.tools/contributing/developing.html).
+documentation](https://docs.dissect.tools/en/latest/contributing/developing.html#building-testing).
 
 ## Contributing
 
