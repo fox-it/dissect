@@ -15,7 +15,7 @@ If we take the example above, you can start analysing parsed MFT entries by just
 **Create a lightweight container using Acquire**  
 Dissect also provides you with a tool called `acquire`. You can deploy this tool on endpoint(s) to create a lightweight container of these machine(s). What is convenient as well, is that you can deploy `acquire` on a hypervisor to quickly create lightweight containers of all the (running) virtual machines on there! All without having to worry about file-locks. These lightweight containers can then be analysed using the tools like `target-query` and `target-shell`, but feel free to use other tools as well.
 
-**A modular setup**
+**A modular setup**  
 Dissect is made with a modular approach in mind. This means that each individual project can be used on its own (or in combination) to create a completely new tool for your engagement or future use!
 
 **Try it out now!**  
