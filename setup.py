@@ -20,6 +20,7 @@ setup(
         "dissect.shellitem==3.1",
         "dissect.sql==3.1",
         "dissect.target[full]==3.3",
+        "dissect.thumbcache==1.0",
         "dissect.util==3.2",
         "dissect.vmfs==3.1",
         "dissect.volume==3.1",
