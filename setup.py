@@ -10,6 +10,7 @@ setup(
         "dissect.etl==3.2",
         "dissect.eventlog==3.2",
         "dissect.evidence==3.2",
+        "dissect.executable==1.0",
         "dissect.extfs==3.2",
         "dissect.fat==3.2",
         "dissect.ffs==3.2",
