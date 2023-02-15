@@ -8,17 +8,21 @@ more information, please see [the documentation](https://docs.dissect.tools/).
 Dissect is an incident response framework build from various parsers and implementations of file formats, developed by Fox-IT. Tying this all together, Dissect allows you to work with tools named `target-query` and `target-shell` to quickly gain access to forensic artefacts, such as Runkeys, Prefetch files, and Windows Event Logs, just to name a few!
 
 **Singular approach**
+
 And the best thing: all in a singular way, regardless of underlying container (E01, VMDK, QCoW), filesystem (NTFS, ExtFS, FFS), or Operating System (Windows, Linux, ESXi) structure / combination. You no longer have to bother extracting files from your forensic container, mount them (in case of VMDKs and such), retrieve the MFT, and parse it using a separate tool, to finally create a timeline to analyse. This is all handled under the hood by Dissect in a user-friendly manner.
 
 If we take the example above, you can start analysing parsed MFT entries by just using a command like `target-query -f mft <PATH_TO_YOUR_IMAGE>`!
 
 **Create a lightweight container using Acquire**
+
 Dissect also provides you with a tool called `acquire`. You can deploy this tool on endpoint(s) to create a lightweight container of these machine(s). What is convenient as well, is that you can deploy `acquire` on a hypervisor to quickly create lightweight containers of all the (running) virtual machines on there! All without having to worry about file-locks. These lightweight containers can then be analysed using the tools like `target-query` and `target-shell`, but feel free to use other tools as well.
 
 **A modular setup**
+
 Dissect is made with a modular approach in mind. This means that each individual project can be used on its own (or in combination) to create a completely new tool for your engagement or future use!
 
 **Try it out now!**
+
 Interested in trying it out for yourself? You can simply `pip install dissect` and start using the `target-*` tooling right away. Or you can use the interactive playground at https://try.dissect.tools to try Dissect in your browser.
 
 Don’t know where to start? Check out the [introduction page](https://docs.dissect.tools/en/latest/usage/introduction.html).
