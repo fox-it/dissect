@@ -1,11 +1,13 @@
 # dissect
 
+Dissect is a digital forensics & incident response framework and toolset that allows you to quickly access and analyse forensic artefacts from various disk and file formats, developed by Fox-IT (part of NCC Group).
+
 This project is a meta package, it will install all other Dissect modules with the right combination of versions. For
 more information, please see [the documentation](https://docs.dissect.tools/).
 
 ## What is Dissect?
 
-Dissect is an incident response framework build from various parsers and implementations of file formats, developed by Fox-IT. Tying this all together, Dissect allows you to work with tools named `target-query` and `target-shell` to quickly gain access to forensic artefacts, such as Runkeys, Prefetch files, and Windows Event Logs, just to name a few!
+Dissect is an incident response framework build from various parsers and implementations of file formats. Tying this all together, Dissect allows you to work with tools named `target-query` and `target-shell` to quickly gain access to forensic artefacts, such as Runkeys, Prefetch files, and Windows Event Logs, just to name a few!
 
 **Singular approach**
 
