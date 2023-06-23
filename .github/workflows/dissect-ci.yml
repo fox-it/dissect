@@ -8,3 +8,23 @@ jobs:
       run_tests: false
       run_linting: false
     secrets: inherit
+
+  publish:
+    if: ${{ github.ref_name == 'main' || github.ref_type == 'tag' }}
+    needs: [ci]
+    runs-on: ubuntu-latest
+    environment: dissect_publish
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: packages
+          path: dist/
+      # According to the documentation, it automatically looks inside the `dist/` folder for packages.
+      - name: Publish package distributions to Pypi
+        uses: pypa/gh-action-pypi-publish@release/v1
+
+  trigger-tests:
+    needs: [publish]
+    uses: fox-it/dissect-workflow-templates/.github/workflows/dissect-ci-demand-test-template.yml@main
