@@ -37,6 +37,7 @@ Want to read everything? Check out the [documentation](https://docs.dissect.tool
 
 Dissect currently consists of the following projects.
 
+- [dissect.btrfs](https://github.com/fox-it/dissect.btrfs)
 - [dissect.cim](https://github.com/fox-it/dissect.cim)
 - [dissect.clfs](https://github.com/fox-it/dissect.clfs)
 - [dissect.cstruct](https://github.com/fox-it/dissect.cstruct)
@@ -49,6 +50,7 @@ Dissect currently consists of the following projects.
 - [dissect.fat](https://github.com/fox-it/dissect.fat)
 - [dissect.ffs](https://github.com/fox-it/dissect.ffs)
 - [dissect.hypervisor](https://github.com/fox-it/dissect.hypervisor)
+- [dissect.jffs](https://github.com/fox-it/dissect.jffs)
 - [dissect.ntfs](https://github.com/fox-it/dissect.ntfs)
 - [dissect.ole](https://github.com/fox-it/dissect.ole)
 - [dissect.regf](https://github.com/fox-it/dissect.regf)
