@@ -41,7 +41,6 @@ Dissect currently consists of the following projects.
 - [dissect.cim](https://github.com/fox-it/dissect.cim)
 - [dissect.clfs](https://github.com/fox-it/dissect.clfs)
 - [dissect.cstruct](https://github.com/fox-it/dissect.cstruct)
-- [dissect.disc](https://github.com/fox-it/dissect.disc)
 - [dissect.esedb](https://github.com/fox-it/dissect.esedb)
 - [dissect.etl](https://github.com/fox-it/dissect.etl)
 - [dissect.eventlog](https://github.com/fox-it/dissect.eventlog)
