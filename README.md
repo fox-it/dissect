@@ -65,7 +65,6 @@ Dissect currently consists of the following projects.
 - [dissect.util](https://github.com/fox-it/dissect.util)
 - [dissect.vmfs](https://github.com/fox-it/dissect.vmfs)
 - [dissect.volume](https://github.com/fox-it/dissect.volume)
-- [dissect.qnxfs](https://github.com/fox-it/dissect.qnxfs)
 - [dissect.xfs](https://github.com/fox-it/dissect.xfs)
 
 ### Related
