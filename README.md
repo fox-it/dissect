@@ -37,10 +37,13 @@ Want to read everything? Check out the [documentation](https://docs.dissect.tool
 
 Dissect currently consists of the following projects.
 
+- [dissect.archive](https://github.com/fox-it/dissect.archive)
 - [dissect.btrfs](https://github.com/fox-it/dissect.btrfs)
 - [dissect.cim](https://github.com/fox-it/dissect.cim)
 - [dissect.clfs](https://github.com/fox-it/dissect.clfs)
 - [dissect.cstruct](https://github.com/fox-it/dissect.cstruct)
+- [dissect.cobaltstrike](https://github.com/fox-it/dissect.cobaltstrike)
+- [dissect.disc](https://github.com/fox-it/dissect.disc)
 - [dissect.esedb](https://github.com/fox-it/dissect.esedb)
 - [dissect.etl](https://github.com/fox-it/dissect.etl)
 - [dissect.eventlog](https://github.com/fox-it/dissect.eventlog)
@@ -54,6 +57,7 @@ Dissect currently consists of the following projects.
 - [dissect.ntfs](https://github.com/fox-it/dissect.ntfs)
 - [dissect.ole](https://github.com/fox-it/dissect.ole)
 - [dissect.regf](https://github.com/fox-it/dissect.regf)
+- [dissect.shellitem](https://github.com/fox-it/dissect.shellitem)
 - [dissect.sql](https://github.com/fox-it/dissect.sql)
 - [dissect.squashfs](https://github.com/fox-it/dissect.squashfs)
 - [dissect.target](https://github.com/fox-it/dissect.target)
@@ -61,6 +65,7 @@ Dissect currently consists of the following projects.
 - [dissect.util](https://github.com/fox-it/dissect.util)
 - [dissect.vmfs](https://github.com/fox-it/dissect.vmfs)
 - [dissect.volume](https://github.com/fox-it/dissect.volume)
+- [dissect.qnxfs](https://github.com/fox-it/dissect.qnxfs)
 - [dissect.xfs](https://github.com/fox-it/dissect.xfs)
 
 ### Related
