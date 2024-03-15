@@ -54,6 +54,7 @@ Dissect currently consists of the following projects.
 - [dissect.ntfs](https://github.com/fox-it/dissect.ntfs)
 - [dissect.ole](https://github.com/fox-it/dissect.ole)
 - [dissect.regf](https://github.com/fox-it/dissect.regf)
+- [dissect.shellitem](https://github.com/fox-it/dissect.shellitem)
 - [dissect.sql](https://github.com/fox-it/dissect.sql)
 - [dissect.squashfs](https://github.com/fox-it/dissect.squashfs)
 - [dissect.target](https://github.com/fox-it/dissect.target)
