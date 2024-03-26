@@ -25,6 +25,7 @@ classifiers = [
   "Topic :: Utilities",
 ]
 dependencies = [
+    "dissect.archive==1.0",
     "dissect.btrfs==1.2",
     "dissect.cim==3.8",
     "dissect.clfs==1.7",

@@ -37,6 +37,7 @@ Want to read everything? Check out the [documentation](https://docs.dissect.tool
 
 Dissect currently consists of the following projects.
 
+- [dissect.archive](https://github.com/fox-it/dissect.archive)
 - [dissect.btrfs](https://github.com/fox-it/dissect.btrfs)
 - [dissect.cim](https://github.com/fox-it/dissect.cim)
 - [dissect.clfs](https://github.com/fox-it/dissect.clfs)
