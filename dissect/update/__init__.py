@@ -150,15 +150,13 @@ def actual_main():
     current_modules = environment_modules(args.verbose)
     if initial_modules and current_modules:
         for module in current_modules:
-            previous_module = next(
-                filter(lambda prev_module: prev_module["name"] == module["name"], initial_modules)
-            )
+            previous_module = next(filter(lambda prev_module: prev_module["name"] == module["name"], initial_modules))
             module_name = module.get("name")
             previous_version = previous_module.get("version")
             current_version = module.get("version")
 
             if previous_version != current_version:
-                print(f'{module_name} \x1b[31m{previous_version}\x1b[0m -> \x1b[32m\x1b[1m{current_version}\x1b[0m')
+                print(f"{module_name} \x1b[31m{previous_version}\x1b[0m -> \x1b[32m\x1b[1m{current_version}\x1b[0m")
 
     if args.verbose:
         log.info("Currently installed dependencies listed below:")
