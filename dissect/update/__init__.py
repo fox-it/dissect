@@ -144,20 +144,21 @@ def actual_main():
             # We assume that this is a git repository and we have git available to us.
             _run(f"cd {module_path} && git pull && pip install -e .", args.verbose)
 
-    log.info("Finished updating all dependencies, see below for changes")
+    log.info("Finished updating dependencies")
 
     # Display the version differences between the dependencies.
     current_modules = environment_modules(args.verbose)
     if initial_modules and current_modules:
         for module in current_modules:
-            previous_module_version = next(
+            previous_module = next(
                 filter(lambda prev_module: prev_module["name"] == module["name"], initial_modules)
             )
+            module_name = module.get("name")
+            previous_version = previous_module.get("version")
+            current_version = module.get("version")
 
-            if previous_module_version.get("version") != module.get("version"):
-                print("\x1b[92m\x1b[1m", end="")
-
-            print(f'{module.get("name")} {previous_module_version.get("version")} -> {module.get("version")}\x1b[0m')
+            if previous_version != current_version:
+                print(f'{module_name} \x1b[31m{previous_version}\x1b[0m -> \x1b[32m\x1b[1m{current_version}\x1b[0m')
 
     if args.verbose:
         log.info("Currently installed dependencies listed below:")
