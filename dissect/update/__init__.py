@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import argparse
+import json
 import logging
 import os
 import subprocess
 import urllib.request
 from pathlib import Path
+from typing import Iterator
 
 from pip._vendor import tomli
 
@@ -24,10 +26,12 @@ try:
         wrapper_class=structlog.make_filtering_bound_logger(logging.INFO),
     )
     log = structlog.get_logger()
+    HAS_STRUCTLOG = True
 
 except ImportError:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
     log = logging.getLogger(__name__)
+    HAS_STRUCTLOG = False
 
 
 PYPROJECT_FILE_PATHS = [
@@ -50,11 +54,20 @@ def _run(cmd: str, verbose: int) -> subprocess.CompletedProcess:
     if verbose or res.returncode != 0:
         print(res.stdout.decode("utf-8"))
         if res.stderr != b"":
+            log.error("Process returned stderr output:")
             print(res.stderr.decode("utf-8"))
     return res
 
 
 def main():
+    try:
+        actual_main()
+    except KeyboardInterrupt:
+        print()
+        return
+
+
+def actual_main():
     help_formatter = argparse.ArgumentDefaultsHelpFormatter
     parser = argparse.ArgumentParser(
         description="Update your Dissect installation.",
@@ -67,10 +80,24 @@ def main():
     parser.add_argument("-v", "--verbose", action="store_true", help="show output of pip", default=False)
     args = parser.parse_args()
 
+    if args.verbose:
+        if HAS_STRUCTLOG:
+            structlog.configure(wrapper_class=structlog.make_filtering_bound_logger(logging.DEBUG))
+        else:
+            logging.getLogger().setLevel(logging.DEBUG)
+
+    # By default we want to ensure we have the latest pip version since outdated pip
+    # versions can be troublesome with dependency version resolving and matching.
     if not args.do_not_upgrade_pip:
         log.info("Updating pip..")
         _run("pip install --upgrade pip", args.verbose)
 
+    # We collect the current state of the installed modules so we can compare versions later.
+    initial_modules = environment_modules(args.verbose)
+
+    # If the user requested an online pyproject.toml update we mis-use the args.file flag
+    # and ask the user to confirm the URL for safety since we use dependency module names
+    # from that file inside subprocess.run calls.
     if args.online:
         args.file = PYPROJECT_ONLINE_URL
         log.info(f"The following url will be used to determine dependencies: {args.file}")
@@ -80,24 +107,57 @@ def main():
             print()
             return
 
+    # We attempt to obtain our dependencies from a pyproject.toml file.
     pyproject = load_pyproject_toml(args.file)
 
-    if not pyproject:
-        log.error("No pyproject.toml found, exiting..")
+    # We check if the current environment has any git editable install locations.
+    editable_installs = list(find_editable_installs(args.verbose))
+
+    if not pyproject and not editable_installs:
+        log.error("No pyproject.toml or editable installs found, exiting..")
         return
 
-    modules = pyproject["project"]["dependencies"]
-    log.info(f"Found {str(len(modules))} dependencies")
+    if pyproject:
+        modules = pyproject["project"]["dependencies"]
+        log.info(f"Found {str(len(modules))} dependencies")
 
-    for module in modules:
-        pretty_module_name = module.split(">")[0].split("=")[0]
-        log.info(f"Updating dependency {pretty_module_name}")
-        # --pre does not do anything if pyproject.toml defines its dependencies strict like foo==1.0.0,
-        # so this only affects loose custom dependency definitions with, e.g. foo>1.0.0,<2.0.0.
-        # TODO: figure out if this is a git repository, then just git pull!
-        _run(f"pip install '{module.strip(',')}' --upgrade --no-cache-dir --pre", args.verbose)
+        for module in modules:
+            pretty_module_name = module.split(">")[0].split("=")[0]
 
-    log.info("Finished updating all dependencies!")
+            # If this module is also in the editable installs we found we skip them here.
+            if pretty_module_name in [m.get("name") for m in editable_installs]:
+                log.debug(f"Not updating module {pretty_module_name} as it is installed as editable")
+                continue
+
+            log.info(f"Updating dependency using pip: {pretty_module_name}")
+            # --pre does not do anything if pyproject.toml defines its dependencies strict like foo==1.0.0,
+            # so this only affects loose custom dependency definitions with, e.g. foo>1.0.0,<2.0.0.
+            _run(f"pip install '{module.strip(',')}' --upgrade --no-cache-dir --pre", args.verbose)
+
+    if editable_installs:
+        log.info(f"Found {str(len(editable_installs))} editable installs in current environment")
+
+        for module in editable_installs:
+            module_name = module.get("name")
+            module_path = module.get("editable_project_location")
+            log.info(f"Updating local dependency: {module_name} @ {module_path}")
+            # We assume that this is a git repository and we have git available to us.
+            _run(f"cd {module_path} && git pull && pip install -e .", args.verbose)
+
+    log.info("Finished updating all dependencies, see below for changes")
+
+    # Display the version differences between the dependencies.
+    current_modules = environment_modules(args.verbose)
+    if initial_modules and current_modules:
+        for module in current_modules:
+            previous_module_version = next(
+                filter(lambda prev_module: prev_module["name"] == module["name"], initial_modules)
+            )
+
+            if previous_module_version.get("version") != module.get("version"):
+                print("\x1b[92m\x1b[1m", end="")
+
+            print(f'{module.get("name")} {previous_module_version.get("version")} -> {module.get("version")}\x1b[0m')
 
     if args.verbose:
         log.info("Currently installed dependencies listed below:")
@@ -132,4 +192,30 @@ def load_pyproject_toml(custom_path: str | None) -> dict | None:
             log.debug(f"File {toml_file} not found!")
             continue
 
-    log.error("No pyproject.toml files found to read dependencies from!")
+    log.error("No pyproject.toml files found to read dependencies from! Consider using --file or --online")
+
+
+def environment_modules(verbose: bool) -> list[dict] | None:
+    """Wrapper around pip list command."""
+
+    try:
+        modules = json.loads(_run("pip list --format=json", verbose).stdout.decode())
+        return modules
+
+    except Exception as e:
+        log.error("Failed to parse current environment using pip!")
+        log.debug("", exc_info=e)
+        return
+
+
+def find_editable_installs(verbose: bool) -> Iterator[dict] | None:
+    """Attempt to find editable installs in the current environment."""
+
+    modules = environment_modules(verbose)
+
+    if not modules:
+        return
+
+    for module in modules:
+        if module.get("editable_project_location"):
+            yield module
