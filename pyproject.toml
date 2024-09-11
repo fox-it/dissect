@@ -89,9 +89,4 @@ include = ["dissect.*"]
 "dissect" = ["pyproject.toml"]
 
 [project.scripts]
-# TODO: pick one :)
 dissect-update = "dissect.update:main"
-dissect-upgrade = "dissect.update:main"
-update-dissect = "dissect.update:main"
-upgrade-dissect = "dissect.update:main"
-target-update = "dissect.update:main"
