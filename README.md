@@ -50,6 +50,7 @@ Dissect currently consists of the following projects.
 - [dissect.extfs](https://github.com/fox-it/dissect.extfs)
 - [dissect.fat](https://github.com/fox-it/dissect.fat)
 - [dissect.ffs](https://github.com/fox-it/dissect.ffs)
+- [dissect.fve](https://github.com/fox-it/dissect.fve)
 - [dissect.hypervisor](https://github.com/fox-it/dissect.hypervisor)
 - [dissect.jffs](https://github.com/fox-it/dissect.jffs)
 - [dissect.ntfs](https://github.com/fox-it/dissect.ntfs)
