@@ -12,8 +12,8 @@ jobs:
   ci:
     uses: fox-it/dissect-workflow-templates/.github/workflows/dissect-ci-template.yml@main
     with:
-      run_tests: false
-      run_linting: false
+      run-tests: false
+      run-linting: false
     secrets: inherit
 
   publish:
