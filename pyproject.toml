@@ -62,14 +62,6 @@ homepage = "https://dissect.tools"
 documentation = "https://docs.dissect.tools"
 repository = "https://github.com/fox-it/dissect"
 
-[project.optional-dependencies]
-lz4 = [
-    "dissect.util[lz4]",
-]
-lzo = [
-    "dissect.util[lzo]",
-]
-
 [tool.black]
 line-length = 120
 
