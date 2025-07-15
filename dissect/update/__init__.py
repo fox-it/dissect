@@ -56,7 +56,7 @@ def _run(cmd: str, verbose: int) -> subprocess.CompletedProcess:
         print(res.stdout.decode())
         if res.stderr:
             log.error("Process returned stderr output:")
-            print(res.stderr.decode("utf-8"))
+            print(res.stderr.decode())
     return res
 
 
@@ -90,13 +90,13 @@ def actual_main():
     # By default we want to ensure we have the latest pip version since outdated pip
     # versions can be troublesome with dependency version resolving and matching.
     if not args.do_not_upgrade_pip:
-        log.info("Updating pip..")
+        log.info("Updating pip...")
         _run(f"{sys.executable} -m pip install --upgrade pip", args.verbose)
 
     # We collect the current state of the installed modules so we can compare versions later.
     initial_modules = environment_modules(args.verbose)
 
-    # If the user requested an online pyproject.toml update we mis-use the args.file flag
+    # If the user requested an online pyproject.toml update we re-use the args.file flag
     # and ask the user to confirm the URL for safety since we use dependency module names
     # from that file inside subprocess.run calls.
     if args.online:
@@ -115,7 +115,7 @@ def actual_main():
     editable_installs = list(find_editable_installs(args.verbose))
 
     if not pyproject and not editable_installs:
-        log.error("No pyproject.toml or editable installs found, exiting..")
+        log.error("No pyproject.toml or editable installs found, exiting...")
         return
 
     if pyproject:
