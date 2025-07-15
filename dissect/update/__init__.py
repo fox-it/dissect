@@ -54,7 +54,7 @@ def _run(cmd: str, verbose: int) -> subprocess.CompletedProcess:
     res = subprocess.run(cmd, shell=True, capture_output=True)
     if verbose or res.returncode != 0:
         print(res.stdout.decode())
-        if res.stderr != b"":
+        if res.stderr:
             log.error("Process returned stderr output:")
             print(res.stderr.decode("utf-8"))
     return res
