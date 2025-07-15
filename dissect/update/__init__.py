@@ -5,6 +5,7 @@ import json
 import logging
 import os
 import subprocess
+import sys
 import urllib.request
 from pathlib import Path
 from typing import Iterator
@@ -90,7 +91,7 @@ def actual_main():
     # versions can be troublesome with dependency version resolving and matching.
     if not args.do_not_upgrade_pip:
         log.info("Updating pip..")
-        _run("pip install --upgrade pip", args.verbose)
+        _run(f"{sys.executable} -m pip install --upgrade pip", args.verbose)
 
     # We collect the current state of the installed modules so we can compare versions later.
     initial_modules = environment_modules(args.verbose)
@@ -132,7 +133,7 @@ def actual_main():
             log.info(f"Updating dependency using pip: {pretty_module_name}")
             # --pre does not do anything if pyproject.toml defines its dependencies strict like foo==1.0.0,
             # so this only affects loose custom dependency definitions with, e.g. foo>1.0.0,<2.0.0.
-            _run(f"pip install '{module.strip(',')}' --upgrade --no-cache-dir --pre", args.verbose)
+            _run(f"{sys.executable} -m pip install '{module.strip(',')}' --upgrade --no-cache-dir --pre", args.verbose)
 
     if editable_installs:
         log.info(f"Found {str(len(editable_installs))} editable installs in current environment")
@@ -142,7 +143,7 @@ def actual_main():
             module_path = module.get("editable_project_location")
             log.info(f"Updating local dependency: {module_name} @ {module_path}")
             # We assume that this is a git repository and we have git available to us.
-            _run(f"cd {module_path} && git pull && pip install -e .", args.verbose)
+            _run(f"cd {module_path} && git pull && {sys.executable} -m pip install -e .", args.verbose)
 
     log.info("Finished updating dependencies")
 
@@ -160,7 +161,7 @@ def actual_main():
 
     if args.verbose:
         log.info("Currently installed dependencies listed below:")
-        _run("pip freeze", args.verbose)
+        _run(f"{sys.executable} -m pip freeze", args.verbose)
 
 
 def load_pyproject_toml(custom_path: str | None) -> dict | None:
@@ -198,7 +199,7 @@ def environment_modules(verbose: bool) -> list[dict] | None:
     """Wrapper around pip list command."""
 
     try:
-        modules = json.loads(_run("pip list --format=json", verbose).stdout.decode())
+        modules = json.loads(_run(f"{sys.executable} -m pip list --format=json", verbose).stdout.decode())
         return modules
 
     except Exception as e:
