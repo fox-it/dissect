@@ -29,6 +29,7 @@ dependencies = [
     "dissect.btrfs==1.7",
     "dissect.cim==3.12",
     "dissect.clfs==1.10",
+    "dissect.cramfs==1.0",
     "dissect.cstruct==4.5",
     "dissect.esedb==3.16",
     "dissect.etl==3.11",
