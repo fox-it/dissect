@@ -49,7 +49,7 @@ dependencies = [
     "dissect.shellitem==3.12",
     "dissect.sql==3.12",
     "dissect.squashfs==1.10",
-    "dissect.target[full]==3.23",
+    "dissect.target[full]==3.23.1",
     "dissect.thumbcache==1.10",
     "dissect.util==3.22",
     "dissect.vmfs==3.12",
