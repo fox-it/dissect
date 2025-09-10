@@ -77,3 +77,9 @@ license-files = ["LICENSE", "COPYRIGHT"]
 include = ["dissect.*"]
 
 [tool.setuptools_scm]
+
+[tool.setuptools.package-data]
+"dissect" = ["pyproject.toml"]
+
+[project.scripts]
+dissect-update = "dissect.update:main"
