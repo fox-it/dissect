@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=65.5.0", "setuptools_scm[toml]>=6.4.0"]
+requires = ["setuptools>=77.0.0", "setuptools_scm[toml]>=6.4.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,7 +7,8 @@ name = "dissect"
 description = "Dissect is a digital forensics & incident response framework and toolset that allows you to quickly access and analyse forensic artefacts from various disk and file formats, developed by Fox-IT (part of NCC Group)"
 readme = "README.md"
 requires-python = ">=3.10"
-license.text = "Affero General Public License v3"
+license = "AGPL-3.0-or-later"
+license-files = ["LICENSE", "COPYRIGHT"]
 authors = [
   {name = "Dissect Team", email = "dissect@fox-it.com"}
 ]
@@ -69,9 +70,6 @@ line-length = 120
 [tool.isort]
 profile = "black"
 known_first_party = ["dissect"]
-
-[tool.setuptools]
-license-files = ["LICENSE", "COPYRIGHT"]
 
 [tool.setuptools.packages.find]
 include = ["dissect.*"]
