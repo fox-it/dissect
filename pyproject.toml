@@ -63,13 +63,6 @@ homepage = "https://dissect.tools"
 documentation = "https://docs.dissect.tools"
 repository = "https://github.com/fox-it/dissect"
 
-[tool.black]
-line-length = 120
-
-[tool.isort]
-profile = "black"
-known_first_party = ["dissect"]
-
 [tool.setuptools.packages.find]
 include = ["dissect.*"]
 
