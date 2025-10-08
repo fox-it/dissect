@@ -33,6 +33,10 @@ Want to get a detailed overview? Check out the [overview page](https://docs.diss
 
 Want to read everything? Check out the [documentation](https://docs.dissect.tools).
 
+## Community
+
+Join our [Discord server](https://discord.gg/tS48YbzXN7) to connect with the community and get support.
+
 ## Projects
 
 Dissect currently consists of the following projects.
