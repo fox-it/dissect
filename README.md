@@ -41,6 +41,7 @@ Join our [Discord server](https://discord.gg/tS48YbzXN7) to connect with the com
 
 Dissect currently consists of the following projects.
 
+- [dissect.apfs](https://github.com/fox-it/dissect.apfs)
 - [dissect.archive](https://github.com/fox-it/dissect.archive)
 - [dissect.btrfs](https://github.com/fox-it/dissect.btrfs)
 - [dissect.cim](https://github.com/fox-it/dissect.cim)
