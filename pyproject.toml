@@ -63,7 +63,88 @@ homepage = "https://dissect.tools"
 documentation = "https://docs.dissect.tools"
 repository = "https://github.com/fox-it/dissect"
 
+[dependency-groups]
+lint = [
+    "typing_extensions",
+    "ruff==0.13.1",
+    "vermin",
+]
+
+[project.scripts]
+dissect = "dissect.cli:main"
+
+[tool.ruff]
+line-length = 120
+required-version = ">=0.13.1"
+extend-exclude = ["tests/_data/**"]
+
+[tool.ruff.format]
+docstring-code-format = true
+
+[tool.ruff.lint]
+select = [
+  "F",
+  "E",
+  "W",
+  "I",
+  "UP",
+  "YTT",
+  "ANN",
+  "B",
+  "C4",
+  "DTZ",
+  "T10",
+  "FA",
+  "ISC",
+  "G",
+  "INP",
+  "PIE",
+  "PYI",
+  "PT",
+  "Q",
+  "RSE",
+  "RET",
+  "SLOT",
+  "SIM",
+  "TID",
+  "TC",
+  "PTH",
+  "PLC",
+  "TRY",
+  "FLY",
+  "PERF",
+  "FURB",
+  "RUF",
+  "D"
+]
+ignore = [
+    "E203", "B904", "UP024", "ANN002", "ANN003", "ANN204", "ANN401", "SIM105", "TRY003", "PLC0415",
+    # Ignore some pydocstyle rules for now as they require a larger cleanup
+    "D1",
+    "D205",
+    "D301",
+    "D417",
+    # Seems bugged: https://github.com/astral-sh/ruff/issues/16824
+    "D402",
+]
+future-annotations = true
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-type-checking]
+strict = true
+
+[tool.ruff.lint.per-file-ignores]
+"dissect/**" = ["INP001"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["dissect.target"]
+known-third-party = ["dissect"]
+required-imports = ["from __future__ import annotations"]
+
 [tool.setuptools.packages.find]
-include = ["dissect.*"]
+include = ["dissect", "dissect.*"]
+namespaces = true
 
 [tool.setuptools_scm]
