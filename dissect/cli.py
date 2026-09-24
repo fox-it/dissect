@@ -107,7 +107,7 @@ def _read_console_script(path: str) -> tuple[str, str] | None:
     try:
         with open(path, encoding="utf-8") as fh:  # noqa: PTH123
             head = fh.read(4096)
-    except OSError:
+    except (OSError, UnicodeDecodeError):
         return None
 
     for line in head.splitlines():
