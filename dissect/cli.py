@@ -72,7 +72,7 @@ def _find_command(target: str) -> EntryPoint | None:
     ``dissect <command>`` path stays fast.
     """
     for name, _, ep in _iter_commands():
-        if name == target:
+        if target == name or target == ep.name:
             return ep
     return None
 
