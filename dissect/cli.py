@@ -21,6 +21,7 @@ the standard library.
 from __future__ import annotations
 
 import os
+import string
 import sys
 from typing import TYPE_CHECKING, NamedTuple
 
@@ -34,6 +35,9 @@ NAMESPACE = "dissect"
 
 # The flagship section whose tools get their ``<section>-`` prefix stripped for a shorter invocation.
 FLAGSHIP = "target"
+
+# Characters that are valid in console script names.
+SCRIPT_CHARS = frozenset(string.ascii_letters + string.digits + "-_")
 
 
 class Command(NamedTuple):
@@ -87,8 +91,8 @@ def _resolve_sibling(command: str, namespace: str = NAMESPACE) -> tuple[str, str
     Returns ``None`` when the sibling can't be found or understood, so the caller can fall back to the
     metadata-based lookup. Only console scripts that live in the given ``namespace`` are considered valid.
     """
-    # Reject anything that could escape the scripts directory; such a name is never a valid command anyway.
-    if os.sep in command or (os.altsep and os.altsep in command):
+    # Only names that can be console scripts are worth opening; anything else falls back to metadata.
+    if any(c not in SCRIPT_CHARS for c in command):
         return None
 
     # Use os.path (already imported at interpreter start) rather than pathlib for fast path
