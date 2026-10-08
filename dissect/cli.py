@@ -59,6 +59,7 @@ def _iter_commands() -> Iterator[tuple[str, str, EntryPoint]]:
         if parts[0] != NAMESPACE or ep.name == NAMESPACE:
             continue
 
+        # if there is no subpackage for this entry point, put it under the "misc" section
         section = parts[1] if len(parts) > 1 else "misc"
 
         name = ep.name
