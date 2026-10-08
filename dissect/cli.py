@@ -77,33 +77,37 @@ def _find_command(target: str) -> EntryPoint | None:
     return None
 
 
-def _resolve_sibling(command: str) -> tuple[str, str, str] | None:
+def _resolve_sibling(command: str, namespace: str = NAMESPACE) -> tuple[str, str, str] | None:
     """Resolve a subcommand to ``(script, module, function)`` by reading its sibling console script.
 
     ``dissect`` is installed alongside the other console scripts (in the same directory as the interpreter), each of
     which is a tiny wrapper containing a ``from <module> import <function>`` line. Reading that directly lets the fast
     path dispatch without importing ``importlib.metadata`` (which is comparatively expensive). Returns ``None`` when
     the sibling can't be found or understood, so the caller can fall back to the metadata-based lookup.
+
+    Only console scripts that live in the given ``namespace`` are considered valid; anything else is ignored.
     """
     # Reject anything that could escape the scripts directory; such a name is never a valid command anyway.
     if os.sep in command or (os.altsep and os.altsep in command):
         return None
 
-    # Use os.path (already imported at interpreter start) rather than pathlib, whose import would add startup cost and
-    # defeat the purpose of this fast path.
+    # Use os.path (already imported at interpreter start) rather than pathlib for fast path
     bindir = os.path.dirname(sys.executable)  # noqa: PTH120
 
     # The flagship candidate (target-<command>) takes precedence over a literal match, mirroring the naming rules.
     for script in (f"{FLAGSHIP}-{command}", command):
-        resolved = _read_console_script(os.path.join(bindir, script))  # noqa: PTH118
+        resolved = _read_console_script(os.path.join(bindir, script), namespace)  # noqa: PTH118
         if resolved is not None:
             return (script, *resolved)
 
     return None
 
 
-def _read_console_script(path: str) -> tuple[str, str] | None:
-    """Extract ``(module, function)`` from a generated console script's ``from <module> import <function>`` line."""
+def _read_console_script(path: str, namespace: str = NAMESPACE) -> tuple[str, str] | None:
+    """Extract ``(module, function)`` from a generated console script's ``from <module> import <function>`` line.
+
+    If the module is not in the given ``namespace``, or the script can't be read, returns ``None``.
+    """
     try:
         with open(path, encoding="utf-8") as fh:  # noqa: PTH123
             head = fh.read(4096)
@@ -114,7 +118,7 @@ def _read_console_script(path: str) -> tuple[str, str] | None:
         if line.startswith("from ") and " import " in line:
             module, _, function = line[len("from ") :].partition(" import ")
             module, function = module.strip(), function.strip()
-            if module.startswith(f"{NAMESPACE}.") and function.isidentifier():
+            if module.startswith(f"{namespace}.") and function.isidentifier():
                 return module, function
 
     return None
