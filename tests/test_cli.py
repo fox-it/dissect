@@ -88,9 +88,6 @@ def run_main(argv: list[str]) -> int | None:
         return exc.code
 
 
-# --- functional tests (always run) ---------------------------------------------------------------------------------
-
-
 def test_resolve_sibling(fake_scripts: Path) -> None:
     # The flagship `target-` prefix takes precedence, so `shell` resolves to `target-shell`.
     assert _resolve_sibling("shell") == ("target-shell", "dissect.target.tools.shell", "main")
@@ -143,9 +140,6 @@ def test_main_no_command(empty_scripts: Path) -> None:
     assert run_main([]) == 2
 
 
-# --- benchmark tests (run only in the `benchmark` tox environment) -------------------------------------------------
-
-
 @pytest.mark.benchmark
 def test_benchmark_resolve_sibling(fake_scripts: Path, benchmark: BenchmarkFixture) -> None:
     """Fast path: resolving a command to its sibling console script."""
@@ -190,9 +184,6 @@ def test_benchmark_build_help(benchmark: BenchmarkFixture) -> None:
     """Help path: building the parser, which reads every tool's docstring for the grouped listing."""
     parser = benchmark(_build_parser, with_commands=True)
     assert parser.epilog
-
-
-# --- whole-entrypoint benchmarks: main() through its distinct paths ------------------------------------------------
 
 
 @pytest.mark.benchmark

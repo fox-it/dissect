@@ -13,6 +13,9 @@ namespace, and are grouped in the help output by the package that provides them 
 
 The common case, ``dissect <command> [<args>...]``, is kept as lean as possible: it resolves and dispatches the single
 requested tool without importing ``argparse``/``ast`` or building the (comparatively expensive) grouped help listing.
+
+The dissect command tries to have a fast-path dispatch to the requested subcommand without importing any modules beyond
+the standard library.
 """
 
 from __future__ import annotations
@@ -80,12 +83,8 @@ def _find_command(target: str) -> EntryPoint | None:
 def _resolve_sibling(command: str, namespace: str = NAMESPACE) -> tuple[str, str, str] | None:
     """Resolve a subcommand to ``(script, module, function)`` by reading its sibling console script.
 
-    ``dissect`` is installed alongside the other console scripts (in the same directory as the interpreter), each of
-    which is a tiny wrapper containing a ``from <module> import <function>`` line. Reading that directly lets the fast
-    path dispatch without importing ``importlib.metadata`` (which is comparatively expensive). Returns ``None`` when
-    the sibling can't be found or understood, so the caller can fall back to the metadata-based lookup.
-
-    Only console scripts that live in the given ``namespace`` are considered valid; anything else is ignored.
+    Returns ``None`` when the sibling can't be found or understood, so the caller can fall back to the
+    metadata-based lookup. Only console scripts that live in the given ``namespace`` are considered valid.
     """
     # Reject anything that could escape the scripts directory; such a name is never a valid command anyway.
     if os.sep in command or (os.altsep and os.altsep in command):
@@ -151,8 +150,7 @@ def _error(message: str) -> int:
 def main() -> int:
     argv = sys.argv[1:]
 
-    # Fast path: a subcommand was given directly. Resolve and dispatch it without importing importlib.metadata,
-    # argparse or ast, or building the grouped help listing.
+    # Fast path: a subcommand was given directly
     if argv and not argv[0].startswith("-"):
         command, args = argv[0], argv[1:]
 
@@ -178,18 +176,11 @@ def main() -> int:
 
 
 def _build_parser(*, with_commands: bool) -> argparse.ArgumentParser:
-    """Build the top-level argument parser.
-
-    ``<command>`` and ``<args>`` are declared as real arguments (rather than a hardcoded ``usage=`` string) so that
-    argparse generates and colorizes the usage line itself. The (comparatively expensive) grouped command listing is
-    only attached as the epilog when ``with_commands`` is set, i.e. for ``--help`` rather than error messages.
-    """
+    """Build the top-level argument parser."""
     # argparse is imported here (not at module level) so the fast dispatch path stays lean.
     import argparse
     from importlib.metadata import PackageNotFoundError, version
 
-    # On Python 3.14+ argparse colorizes usage/options by default (respecting can_colorize(): tty, NO_COLOR, ...); on
-    # older versions there is no color support to enable.
     parser = argparse.ArgumentParser(
         prog=NAMESPACE,
         description="Unified entry point for the `dissect` suite of tools.",
@@ -202,9 +193,6 @@ def _build_parser(*, with_commands: bool) -> argparse.ArgumentParser:
         # Running from a source checkout that isn't installed as a distribution.
         dist_version = "0+unknown"
     parser.add_argument("--version", action="version", version=f"%(prog)s {dist_version}")
-    # nargs="*" (rather than REMAINDER) so the usage line renders as `<command> [<args> ...]`, consistent with the
-    # `<args>` metavar shown in the positional listing. These arguments are only ever used to render usage/help; the
-    # fast path resolves and dispatches the real command itself.
     parser.add_argument("command", metavar="<command>", help="the dissect command to run")
     parser.add_argument("args", metavar="<args>", nargs="*", help="arguments for the command")
 
