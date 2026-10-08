@@ -96,17 +96,18 @@ def _resolve_sibling(command: str, namespace: str = NAMESPACE) -> tuple[str, str
 
     # The flagship candidate (target-<command>) takes precedence over a literal match, mirroring the naming rules.
     for script in (f"{FLAGSHIP}-{command}", command):
-        resolved = _read_console_script(os.path.join(bindir, script), namespace)  # noqa: PTH118
-        if resolved is not None:
-            return (script, *resolved)
+        if resolved := _read_console_script(os.path.join(bindir, script)):  # noqa: PTH118
+            module, function = resolved
+            if module.startswith(f"{namespace}."):
+                return (script, module, function)
 
     return None
 
 
-def _read_console_script(path: str, namespace: str = NAMESPACE) -> tuple[str, str] | None:
+def _read_console_script(path: str) -> tuple[str, str] | None:
     """Extract ``(module, function)`` from a generated console script's ``from <module> import <function>`` line.
 
-    If the module is not in the given ``namespace``, or the script can't be read, returns ``None``.
+    Returns ``None`` when the script can't be read or doesn't contain a valid import line.
     """
     try:
         with open(path, encoding="utf-8") as fh:  # noqa: PTH123
@@ -118,7 +119,7 @@ def _read_console_script(path: str, namespace: str = NAMESPACE) -> tuple[str, st
         if line.startswith("from ") and " import " in line:
             module, _, function = line[len("from ") :].partition(" import ")
             module, function = module.strip(), function.strip()
-            if module.startswith(f"{namespace}.") and function.isidentifier():
+            if function.isidentifier():
                 return module, function
 
     return None
